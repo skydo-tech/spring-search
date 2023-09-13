@@ -7,9 +7,9 @@
 		<version>2.4.1</version>
 		<relativePath /> <!-- lookup parent from repository --> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.sipios</groupId>
+	<groupId>com.skydo.lib</groupId>
 	<artifactId>spring-search</artifactId>
-	<version>0.2.5</version>
+	<version>0.2.5-SNAPSHOT</version>
 	<name>spring-search</name>
 	<description>API for generating spring boot database queries</description>
 
@@ -348,27 +348,34 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-						<configuration>
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-gpg-plugin</artifactId>-->
+<!--				<version>1.5</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>sign-artifacts</id>-->
+<!--						<phase>verify</phase>-->
+<!--						<goals>-->
+<!--							<goal>sign</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<gpgArguments>-->
+<!--								<arg>&#45;&#45;pinentry-mode</arg>-->
+<!--								<arg>loopback</arg>-->
+<!--							</gpgArguments>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>com.allogy.maven.wagon</groupId>
+				<artifactId>maven-s3-wagon</artifactId>
+				<version>1.2.0</version>
+			</extension>
+		</extensions>
 	</build>
 	<scm>
 		<connection>scm:git:https://github.com/sipios/spring-search.git</connection>
@@ -379,8 +386,12 @@
 
 	<distributionManagement>
 		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+			<id>skydo-mvn</id>
+			<url>s3://skydo-mvn/release</url>
 		</repository>
+		<snapshotRepository>
+			<id>skydo-mvn</id>
+			<url>s3://skydo-mvn/snapshot</url>
+		</snapshotRepository>
 	</distributionManagement>
 </project>

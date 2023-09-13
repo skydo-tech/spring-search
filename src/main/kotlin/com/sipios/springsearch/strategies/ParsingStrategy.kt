@@ -2,6 +2,7 @@ package com.sipios.springsearch.strategies
 
 import com.sipios.springsearch.SearchOperation
 import com.sipios.springsearch.anotation.SearchSpec
+import java.math.BigDecimal
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
@@ -61,21 +62,27 @@ interface ParsingStrategy {
     }
 
     companion object {
-        fun getStrategy(fieldClass: KClass<out Any>, searchSpecAnnotation: SearchSpec): ParsingStrategy {
-            return when {
-                fieldClass == Boolean::class -> BooleanStrategy()
-                fieldClass == Date::class -> DateStrategy()
-                fieldClass == Double::class -> DoubleStrategy()
-                fieldClass == Float::class -> FloatStrategy()
-                fieldClass == Int::class -> IntStrategy()
-                fieldClass.isSubclassOf(Enum::class) -> EnumStrategy()
-                fieldClass == Duration::class -> DurationStrategy()
-                fieldClass == LocalDate::class -> LocalDateStrategy()
-                fieldClass == LocalTime::class -> LocalTimeStrategy()
-                fieldClass == LocalDateTime::class -> LocalDateTimeStrategy()
-                fieldClass == Instant::class -> InstantStrategy()
-                fieldClass == UUID::class -> UUIDStrategy()
-                else -> StringStrategy(searchSpecAnnotation)
+        fun getStrategy(fieldClass: KClass<out Any>, searchSpecAnnotation: SearchSpec, value: String): ParsingStrategy {
+            return if (value.startsWith("#", true)) {
+                ColumnStrategy()
+            } else {
+                when {
+                    fieldClass == Boolean::class -> BooleanStrategy()
+                    fieldClass == Date::class -> DateStrategy()
+                    fieldClass == Double::class -> DoubleStrategy()
+                    fieldClass == Float::class -> FloatStrategy()
+                    fieldClass == Int::class -> IntStrategy()
+                    fieldClass.isSubclassOf(Enum::class) -> EnumStrategy()
+                    fieldClass == Duration::class -> DurationStrategy()
+                    fieldClass == LocalDate::class -> LocalDateStrategy()
+                    fieldClass == LocalTime::class -> LocalTimeStrategy()
+                    fieldClass == LocalDateTime::class -> LocalDateTimeStrategy()
+                    fieldClass == Instant::class -> InstantStrategy()
+                    fieldClass == UUID::class -> UUIDStrategy()
+                    fieldClass == Long::class -> LongStrategy()
+                    fieldClass == BigDecimal::class -> BigDecimalStrategy()
+                    else -> StringStrategy(searchSpecAnnotation)
+                }
             }
         }
     }

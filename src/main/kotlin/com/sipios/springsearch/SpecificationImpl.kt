@@ -26,7 +26,7 @@ class SpecificationImpl<T>(private val criteria: SearchCriteria, private val sea
         val nestedRoot = getNestedRoot(root, nestedKey)
         val criteriaKey = nestedKey[nestedKey.size - 1]
         val fieldClass = nestedRoot.get<Any>(criteriaKey).javaType.kotlin
-        val strategy = ParsingStrategy.getStrategy(fieldClass, searchSpecAnnotation)
+        val strategy = ParsingStrategy.getStrategy(fieldClass, searchSpecAnnotation, criteria.value)
         val value: Any?
         try {
             value = strategy.parse(criteria.value, fieldClass)
